@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet};
 
 pub struct Day {
     p1: i64,
@@ -15,14 +15,6 @@ impl crate::Problem for Day {
             p1: 0, 
             p2: 0,
             input,
-//             input: String::from("R 4
-// U 4
-// L 3
-// D 1
-// R 4
-// D 1
-// L 5
-// R 2"),
         }
     }
 
@@ -38,7 +30,22 @@ impl crate::Problem for Day {
         self.p1 = positions.len() as i64;
     }
 
-    fn do_p2(&mut self) {}
+    fn do_p2(&mut self) {
+        let mut positions: HashSet<(i16, i16)> = HashSet::new();
+        let mut rope = Node::new();
+        let mut new_node;
+        for _i in 0..9 {
+            new_node = Node::new();
+            new_node.next_node = Some(Box::new(rope));
+            rope = new_node
+        }
+
+        for line in self.input.lines() {
+            rope.follow_motion(line, &mut positions);
+        }
+
+        self.p2 = positions.len() as i64;
+    }
 
     fn p1_result(&self) -> String {
         format!("{}", self.p1)
@@ -56,7 +63,6 @@ struct Node{
 }
 
 impl Node {
-
     fn new() -> Self {
         let node = Node {
             x1:0, 
