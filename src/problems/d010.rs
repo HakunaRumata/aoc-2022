@@ -31,24 +31,14 @@ impl crate::Problem for Day {
         }
     }
 
-    fn do_p2(&mut self) {
-        for line in self.input.lines() {
-            if let Some((_, amount)) = line.split_once(" ") {
-                let num = amount.parse::<i64>().unwrap();
-                self.solution.cycle(0);
-                self.solution.cycle(num)
-            } else {
-                self.solution.cycle(0);
-            }
-        }
-    }
+    fn do_p2(&mut self) {}
 
     fn p1_result(&self) -> String {
         format!("{}", self.solution.p1)
     }
 
     fn p2_result(&self) -> String {
-        format!("lol, lmao")
+        format!("Please refactor day 10 🥺🥺🥺")
     }
 }
 
@@ -66,15 +56,17 @@ impl Solution {
         if (self.step - 20) % 40 == 0 {
             self.p1 += self.step * self.x;
         }
-        if self.pos >= self.x && self.pos < self.x + 3 {
-            print!("#")
-        } else {
-            print!(".")
-        }
-        if self.pos >= 40 {
-            println!();
-            self.pos = 0;
-        }
+        
+        // Make it so I can run this without having the output everytime I run day 10
+        // if self.pos >= self.x && self.pos < self.x + 3 {
+        //     print!("#")
+        // } else {
+        //     print!(".")
+        // }
+        // if self.pos >= 40 {
+        //     println!();
+        //     self.pos = 0;
+        // }
 
         self.x += amount;
     }
