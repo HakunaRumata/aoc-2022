@@ -9,15 +9,24 @@ impl crate::Problem for Day {
     const DAY: u32 = 6;
 
     fn new(input: String) -> Self {
-        Self { p1: 0, p2: 0, input }
+        Self {
+            p1: 0,
+            p2: 0,
+            input,
+        }
     }
 
     fn do_p1(&mut self) {
         let mut current;
         for i in 0..self.input.len() - 3 {
             current = &self.input[i..i + 4];
-            let (a, b, c, d) = (&current[0..1], &current[1..2], &current[2..3], &current[3..4],);
-            if  a != b && a != c && a != d && b != c && b != d && c != d {
+            let (a, b, c, d) = (
+                &current[0..1],
+                &current[1..2],
+                &current[2..3],
+                &current[3..4],
+            );
+            if a != b && a != c && a != d && b != c && b != d && c != d {
                 self.p1 = (i + 4) as i64;
                 break;
             }
@@ -32,12 +41,11 @@ impl crate::Problem for Day {
         for i in 0..self.input.len() - 14 {
             current = &self.input[i..i + 14];
             for j in 0..14 {
-                selected = &current[j..j+1];
-                remaining = &current[j+1..14];
+                selected = &current[j..j + 1];
+                remaining = &current[j + 1..14];
                 if remaining.contains(selected) {
                     break;
-                }
-                else if j == 13 {
+                } else if j == 13 {
                     is_unique = true;
                 }
             }

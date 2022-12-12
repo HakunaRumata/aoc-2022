@@ -10,7 +10,7 @@ impl crate::Problem for Day {
     const DAY: u32 = 7;
 
     fn new(input: String) -> Self {
-        Self { 
+        Self {
             input,
             file_system: FileSystem {
                 p1: 0,

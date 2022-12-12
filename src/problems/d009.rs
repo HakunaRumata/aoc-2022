@@ -1,9 +1,9 @@
-use std::{collections::HashSet};
+use std::collections::HashSet;
 
 pub struct Day {
     p1: i64,
     p2: i64,
-    input: String
+    input: String,
 }
 
 impl crate::Problem for Day {
@@ -11,8 +11,8 @@ impl crate::Problem for Day {
     const DAY: u32 = 9;
 
     fn new(input: String) -> Self {
-        Self { 
-            p1: 0, 
+        Self {
+            p1: 0,
             p2: 0,
             input,
         }
@@ -56,7 +56,7 @@ impl crate::Problem for Day {
     }
 }
 
-struct Node{
+struct Node {
     x1: i16,
     y1: i16,
     next_node: Option<Box<Node>>,
@@ -65,8 +65,8 @@ struct Node{
 impl Node {
     fn new() -> Self {
         let node = Node {
-            x1:0, 
-            y1:0, 
+            x1: 0,
+            y1: 0,
             next_node: None,
         };
 
@@ -80,17 +80,17 @@ impl Node {
         }
     }
 
-    fn move_head(&mut self, direction: &str){
+    fn move_head(&mut self, direction: &str) {
         match direction {
             _movement if direction.eq("R") => self.x1 += 1,
             _movement if direction.eq("L") => self.x1 -= 1,
             _movement if direction.eq("U") => self.y1 += 1,
             _movement if direction.eq("D") => self.y1 -= 1,
-            _ => ()
+            _ => (),
         }
     }
 
-    fn follow_tail(&mut self, prev_x: i16, prev_y: i16, positions: &mut HashSet<(i16, i16)>){
+    fn follow_tail(&mut self, prev_x: i16, prev_y: i16, positions: &mut HashSet<(i16, i16)>) {
         match self {
             // straight movements
             _ if prev_x > self.x1 + 1 && prev_y == self.y1 => self.x1 += 1,
@@ -99,35 +99,41 @@ impl Node {
             _ if prev_y < self.y1 - 1 && prev_x == self.x1 => self.y1 -= 1,
             // x + 1, y + 1
             _ if prev_x > self.x1 + 1 && prev_y > self.y1
-              || prev_y > self.y1 + 1 && prev_x > self.x1 => {
+                || prev_y > self.y1 + 1 && prev_x > self.x1 =>
+            {
                 self.x1 += 1;
                 self.y1 += 1
-            },
+            }
             // x + 1, y - 1
             _ if prev_x > self.x1 + 1 && prev_y < self.y1
-              || prev_y < self.y1 - 1 && prev_x > self.x1 => {
+                || prev_y < self.y1 - 1 && prev_x > self.x1 =>
+            {
                 self.x1 += 1;
                 self.y1 -= 1
-            },
+            }
             // x - 1, y + 1
             _ if prev_x < self.x1 - 1 && prev_y > self.y1
-              || prev_x < self.x1 && prev_y > self.y1 + 1 => {
+                || prev_x < self.x1 && prev_y > self.y1 + 1 =>
+            {
                 self.x1 -= 1;
                 self.y1 += 1
-            },
+            }
             // x - 1, y - 1
             _ if prev_x < self.x1 - 1 && prev_y < self.y1
-              || prev_x < self.x1 && prev_y < self.y1 - 1 => {
+                || prev_x < self.x1 && prev_y < self.y1 - 1 =>
+            {
                 self.x1 -= 1;
                 self.y1 -= 1
-            },
+            }
             _ => (),
         }
 
         if self.next_node.is_some() {
-            self.next_node.as_mut().unwrap().follow_tail(self.x1, self.y1, positions)
-        }
-        else {
+            self.next_node
+                .as_mut()
+                .unwrap()
+                .follow_tail(self.x1, self.y1, positions)
+        } else {
             positions.insert((self.x1, self.y1));
         }
     }

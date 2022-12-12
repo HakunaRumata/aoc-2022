@@ -9,21 +9,52 @@ impl crate::Problem for Day {
     const DAY: u32 = 2;
 
     fn new(input: String) -> Self {
-        Self { p1: 0, p2: 0, input }
+        Self {
+            p1: 0,
+            p2: 0,
+            input,
+        }
     }
-    
+
     fn do_p1(&mut self) {
         for rps in self.input.lines() {
             match rps {
-                "A X" => { self.p1 += 4; self.p2 += 3 }
-                "A Y" => { self.p1 += 8; self.p2 += 4 }
-                "A Z" => { self.p1 += 3; self.p2 += 8 }
-                "B X" => { self.p1 += 1; self.p2 += 1 }
-                "B Y" => { self.p1 += 5; self.p2 += 5 }
-                "B Z" => { self.p1 += 9; self.p2 += 9 }
-                "C X" => { self.p1 += 7; self.p2 += 2 }
-                "C Y" => { self.p1 += 2; self.p2 += 6 }
-                "C Z" => { self.p1 += 6; self.p2 += 7 }
+                "A X" => {
+                    self.p1 += 4;
+                    self.p2 += 3
+                }
+                "A Y" => {
+                    self.p1 += 8;
+                    self.p2 += 4
+                }
+                "A Z" => {
+                    self.p1 += 3;
+                    self.p2 += 8
+                }
+                "B X" => {
+                    self.p1 += 1;
+                    self.p2 += 1
+                }
+                "B Y" => {
+                    self.p1 += 5;
+                    self.p2 += 5
+                }
+                "B Z" => {
+                    self.p1 += 9;
+                    self.p2 += 9
+                }
+                "C X" => {
+                    self.p1 += 7;
+                    self.p2 += 2
+                }
+                "C Y" => {
+                    self.p1 += 2;
+                    self.p2 += 6
+                }
+                "C Z" => {
+                    self.p1 += 6;
+                    self.p2 += 7
+                }
                 _ => (),
             }
         }
