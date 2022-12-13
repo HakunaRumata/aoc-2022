@@ -1,3 +1,5 @@
+use std::cell::RefCell;
+
 pub struct Day {
     p1: i64,
     p2: i64,
@@ -44,8 +46,17 @@ Monkey 3:
 
     fn do_p1(&mut self) {
         let mut monkees: Vec<Monke> = Vec::new();
-        for monke in self.input.split("\n\n") {
-            monkees.push(Monke::new(monke));
+        let mut monkees = RefCell::new(monkees);
+        for monke in  self.input.split("\n\n"){
+            monkees.borrow_mut().push(Monke::new(monke));
+        }
+
+        for _i in 0..20 {
+            for monke in monkees.borrow().iter() {
+                if let Ok(monksters) = monkees.try_borrow_mut() {
+                    
+                }
+            }
         }
     }
 
@@ -65,7 +76,7 @@ struct Monke {
     items: Vec<u32>,
     option_a: usize,
     option_b: usize,
-    operation: Box<dyn Fn(&u32) -> u32>,
+    operation: Operation,
     test_num: u32,
 }
 
@@ -75,11 +86,10 @@ impl Monke {
         let values: Vec<&str> = monke.lines().collect();
         let items = values[1][18..].split(", ").map(|i| i.parse::<u32>().unwrap()).collect();
         let operation_input = &values[2][19..];
-        let operation: Box<dyn Fn(&u32) -> u32> = match operation_input {
-            _square if operation_input == "old * old" => Box::new(|&num| num * num),
-            _double if operation_input == "old + old" => Box::new(|&num| num + num),
-            add if operation_input.contains("old +") => Box::new(|&num| num + add[5..].parse::<u32>().unwrap()),
-            multiply if operation_input == "old +" => Box::new(|&num| num + multiply[5..].parse::<u32>().unwrap()),
+        let operation = match operation_input {
+            _square if operation_input == "old * old" => Operation::Square,
+            add if operation_input.contains("old +") => Operation::Add(add[5..].parse::<u32>().unwrap()),
+            multiply if operation_input.contains("old +") => Operation::Multiply(multiply[5..].parse::<u32>().unwrap()),
             _ => panic!()
         };
 
@@ -93,16 +103,32 @@ impl Monke {
         }
     }
 
-
-    fn process_item(&mut self, monkees: &mut Vec<Monke>) {
-        for item in self.items.clone() {
+    fn process_items(&mut self, monkees: RefCell<Vec<Monke>>) {
+        for item in self.items.iter() {
             self.inspections += 1;
-            if (self.operation)(&item) / self.test_num == 0 {
-                monkees[self.option_a].items.push(item)
+            if self.operation.apply(*item) / self.test_num == 0 {
+                monkees.borrow_mut()[self.option_a].items.push(*item)
             }
             else {
-                monkees[self.option_b].items.push(item)
+                monkees.borrow_mut()[self.option_b].items.push(*item)
             }
+        }
+        println!("{}", self.items.len())
+    }
+}
+
+enum Operation {
+    Square,
+    Add(u32),
+    Multiply(u32)
+}
+
+impl Operation {
+    fn apply (&self, v: u32) -> u32  {
+        match self {
+            Self::Square => v * v,
+            Self::Add(n) => *n + v,
+            Self::Multiply(n) => *n * v,
         }
     }
 }
